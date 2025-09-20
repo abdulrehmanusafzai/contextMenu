@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <title>Context Menu</title>
+</head>
+<style>
+  * {
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+  }
+
+  #main{
+    border: 1px solid #777777;
+    border-radius: 4px;
+    background-color: #fff;
+    position: absolute;
+    box-shadow: 0px 0 30px -10px;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    transition:  transform 200ms ease, opacity 200ms ease, top 300ms ease-out, left 300ms ease-out;
+  }
+  #main.show{
+    pointer-events: auto;
+    transform: scale(1);
+    opacity: 1;
+  }
+  #primaryDropdown{
+    padding: 0px 0;
+    list-style: none;
+  }
+  #primaryDropdown li{
+    height: 20px;
+    padding: 10px 10px;
+    cursor: pointer;
+    font-size: 12pt;
+  }
+  #primaryDropdown li:hover{
+    background-color: #cfcfcf;
+  }
+  #primaryDropdown li ul{
+    position: relative;
+    top: -34px;
+    background-color: #fff;
+    list-style: none;
+    min-width: 150px;
+    border: 1px solid #777;
+    box-shadow: 0px 0 10px 0;
+    padding: 0 0;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: transform 200ms ease, opacity 200ms ease;
+    transition-delay: 100ms;
+  }
+  #primaryDropdown li ul li{
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+  #primaryDropdown li ul li:hover{
+    background: #cfcfcf;
+  }
+  #primaryDropdown li:hover > #secondaryDropRight1{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+  #primaryDropdown li:hover > #secondaryDropRight2{
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  
+</style>
+<body>
+  <h1>Click any where to triger custom context menu</h1>
+  <div id="main">
+    <ul id="primaryDropdown">
+      <li onclick="window.location.reload()">Refresh Page</li>
+      <li onclick="document.bgColor = '#3b3b3b'">Change Background Color</li>
+      <li>
+        Drop Right (Slide)
+        <ul id="secondaryDropRight1" class="secondaryDrop">
+          <li>Slide Drop Right</li>
+          <li>Option 1</li>
+          <li>Option 2</li>
+        </ul>
+      </li>
+      <li>
+        Drop Right (fade)
+        <ul id="secondaryDropRight2" class="secondaryDrop">
+          <li>Fade Drop Right</li>
+          <li>Option 1</li>
+          <li>Option 2</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <script>
+    const menu = document.getElementById("main");
+    const secondaryDropRight1 = document.getElementById("secondaryDropRight1");
+    const secondaryDropRight2 = document.getElementById("secondaryDropRight2");
+    
+    document.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      menu.classList.add("show");
+      menu.style.left = "0px";
+      menu.style.top = "0px";
+      const menuRect = menu.getBoundingClientRect();
+      const secMenu = secondaryDropRight1.getBoundingClientRect();
+      const winW = window.innerWidth;
+      const winH = window.innerHeight;
+      let left = e.pageX;
+      let top = e.pageY;
+      let secondaryLeft = "100%";
+      if (left + menuRect.width > winW){
+        left = left - menuRect.width;
+      }
+      if (left + menuRect.width + secMenu.width> winW){
+      secondaryLeft = "-100%";
+      }
+      if (top + menuRect.height > winH){
+        top = top - menuRect.height;
+      }
+      menu.style.left = left + "px";
+      menu.style.top = top + "px";
+      secondaryDropRight1.style.left = secondaryLeft;
+      secondaryDropRight2.style.left = secondaryLeft;
+
+    });
+    document.addEventListener("click", (e) => {
+      menu.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
