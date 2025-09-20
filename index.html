@@ -70,11 +70,6 @@
     pointer-events: auto;
     transform: translateX(0);
   }
-  #primaryDropdown li:hover > #secondaryDropRight2{
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
-  }
   
 </style>
 <body>
@@ -91,20 +86,11 @@
           <li>Option 2</li>
         </ul>
       </li>
-      <li>
-        Drop Right (fade)
-        <ul id="secondaryDropRight2" class="secondaryDrop">
-          <li>Fade Drop Right</li>
-          <li>Option 1</li>
-          <li>Option 2</li>
-        </ul>
-      </li>
     </ul>
   </div>
   <script>
     const menu = document.getElementById("main");
     const secondaryDropRight1 = document.getElementById("secondaryDropRight1");
-    const secondaryDropRight2 = document.getElementById("secondaryDropRight2");
     
     document.addEventListener("contextmenu", (e) => {
       e.preventDefault();
@@ -130,7 +116,6 @@
       menu.style.left = left + "px";
       menu.style.top = top + "px";
       secondaryDropRight1.style.left = secondaryLeft;
-      secondaryDropRight2.style.left = secondaryLeft;
 
     });
     document.addEventListener("click", (e) => {
